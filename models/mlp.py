@@ -1,0 +1,21 @@
+# Multi Layer Perceptron (MLP) model
+import numpy as np
+
+class MLP:
+    def __init__(self, input_size, hidden_size, output_size):
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.output_size = output_size
+        self.weights_input_hidden = np.random.randn(input_size, hidden_size) * 0.01
+        self.weights_hidden_output = np.random.randn(hidden_size, output_size) * 0.01
+        self.bias_hidden = np.zeros((1, hidden_size))
+        self.bias_output = np.zeros((1, output_size))
+
+    # Rectified Linear Unit (ReLU) activation function
+    def relu(self, x):
+        return np.maximum(0, x)
+        
+    # Softmax activation function
+    def softmax(self, x):
+        exp_x = np.exp(x - np.max(x, axis=1, keepdims=True))
+        return exp_x / np.sum(exp_x, axis=1, keepdims=True)
