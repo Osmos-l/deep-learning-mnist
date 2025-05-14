@@ -54,7 +54,7 @@ Les valeurs de *y_pred* sont toujours comprises entre **0** et **1** (grâce à 
 - *log(0)* mène à une erreur (indéfini).
 - *log(1) = 0* : Cela indique qu’il n’y a **aucune erreur** lorsqu’une prédiction est parfaitement correcte.
 
-Si le gradient devient 0, cela indique que l'apprentissage ne progresse pas. Pour éviter ce problème, nous utilisons une petite valeur proche de zéro : on transforme *y_pred = 0* en *1e^{-15} * et *y_{\text{pred}} = 1* en *1 - 1e^{-15}*.
+Si le gradient devient 0, cela indique que l'apprentissage ne progresse pas. Pour éviter ce problème, nous utilisons une petite valeur proche de zéro : on transforme *y_pred = 0* en *1e^{-15}* et *y_pred = 1* en *1 - 1e^{-15}*.
 
 ### Exemple de calcul du loss
 Supposons : 
