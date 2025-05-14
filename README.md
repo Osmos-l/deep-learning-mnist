@@ -39,35 +39,30 @@ L’objectif de l’apprentissage du MLP est de **minimiser cette distance** pou
 ### Calcul du loss
 Le calcul du **loss** est effectué avec la formule suivante :
 
-\[
-\text{loss} = y_{\text{true}} \times \log(y_{\text{pred}})
-\]
+*loss = y_true * log(y_pred)*
 
 #### Pourquoi utiliser le logarithme ?
 Le logarithme sert à **fortement pénaliser les mauvaises prédictions**. En effet, plus la prédiction est éloignée de la vérité, plus la perte sera grande.
 
-Les valeurs de \( y_{\text{pred}} \) sont toujours comprises entre **0** et **1** (grâce à **Softmax**). Quelques exemples de calculs de logarithme :
+Les valeurs de *y_pred* sont toujours comprises entre **0** et **1** (grâce à **Softmax**). Quelques exemples de calculs de logarithme :
 
-- \( \log(0.9) = -0.1 \)
-- \( \log(0.1) = -2.3 \)
-- \( \log(0.0001) = -9.2 \)
+- *log(0.9) = -0.1*
+- *log(0.1) = -2.3*
+- *log(0.0001) = -9.2*
 
 #### Attention !
-- \( \log(0) \) mène à une erreur (indéfini).
-- \( \log(1) = 0 \) : Cela indique qu’il n’y a **aucune erreur** lorsqu’une prédiction est parfaitement correcte.
+- *log(0)* mène à une erreur (indéfini).
+- *log(1) = 0* : Cela indique qu’il n’y a **aucune erreur** lorsqu’une prédiction est parfaitement correcte.
 
-Si le gradient devient 0, cela indique que l'apprentissage ne progresse pas. Pour éviter ce problème, nous utilisons une petite valeur proche de zéro : on transforme \( y_{\text{pred}} = 0 \) en \( 1e^{-15} \) et \( y_{\text{pred}} = 1 \) en \( 1 - 1e^{-15} \).
+Si le gradient devient 0, cela indique que l'apprentissage ne progresse pas. Pour éviter ce problème, nous utilisons une petite valeur proche de zéro : on transforme *y_pred = 0* en *1e^{-15} * et *y_{\text{pred}} = 1* en *1 - 1e^{-15}*.
 
 ### Exemple de calcul du loss
+Supposons : 
+*y_true = [0, 1, 0]*
+*y_pred = [0.25, 0.5, 0.25]*
 
-Supposons que la vérité soit \( y_{\text{true}} = [0, 1, 0] \) et la prédiction soit \( y_{\text{pred}} = [0.25, 0.5, 0.25] \). Le calcul du loss se fait comme suit :
-
-\[
-\text{loss} = [0 \times \log(0.25), 1 \times \log(0.5), 0 \times \log(0.25)]
-\]
-
-\[
-\text{loss} = [0, 1 \times \log(0.5), 0]
-\]
+Le calcul du loss se fait comme suit :
+*loss = [0 x log(0.25), 1 x log(0.5), 0 x log(0.25)]*
+*loss = [0, 1 x log(0.5), 0]*
 
 Dans cet exemple, le gradient/loss associé est le suivant.
