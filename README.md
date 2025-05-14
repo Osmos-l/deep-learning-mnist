@@ -58,11 +58,11 @@ Si le gradient devient 0, cela indique que l'apprentissage ne progresse pas. Pou
 
 ### Exemple de calcul du loss
 Supposons : 
-*y_true = [0, 1, 0]*
-*y_pred = [0.25, 0.5, 0.25]*
+- *y_true = [0, 1, 0]*
+- *y_pred = [0.25, 0.5, 0.25]*
 
 Le calcul du loss se fait comme suit :
-*loss = [0 x log(0.25), 1 x log(0.5), 0 x log(0.25)]*
-*loss = [0, 1 x log(0.5), 0]*
+- *loss = [0 x log(0.25), 1 x log(0.5), 0 x log(0.25)]*
+- *loss = [0, 1 x log(0.5), 0]*
 
 Dans cet exemple, le gradient/loss associé est le suivant.
