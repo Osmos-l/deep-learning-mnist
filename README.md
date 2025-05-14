@@ -1,11 +1,15 @@
 # mnist_mlp
 
+![Mnist](image-1.png)
+
 ## Description
 
 Le MLP (Multilayer Perceptron) est constitué de trois couches principales :
 - La couche d'entrée (Input layer)
 - La couche cachée (Hidden layer)
 - La couche de sortie (Output layer)
+
+![MLP](image.png)
 
 ## Input layer
 Elle sert à faire entrer dans le MLP chaque pixel de l'image. Dans le cas de MNIST, chaque image est composée de 28x28 pixels, soit 784 pixels au total.
@@ -27,6 +31,43 @@ Cela signifie que :
 - La probabilité d'appartenir à la classe 2 est de **10%**.
 
 ## Loss
+
 La fonction **cross_entropy_loss** est utilisée pour mesurer la **distance** entre la réponse prédite (yp) et la vérité (y). La cross-entropy calcule l'écart entre la distribution des probabilités prédites par le modèle et la distribution des probabilités de la vérité terrain (qui est un vecteur one-hot).
 
 L’objectif de l’apprentissage du MLP est de **minimiser cette distance** pour améliorer les prédictions à chaque itération.
+
+### Calcul du loss
+Le calcul du **loss** est effectué avec la formule suivante :
+
+\[
+\text{loss} = y_{\text{true}} \times \log(y_{\text{pred}})
+\]
+
+#### Pourquoi utiliser le logarithme ?
+Le logarithme sert à **fortement pénaliser les mauvaises prédictions**. En effet, plus la prédiction est éloignée de la vérité, plus la perte sera grande.
+
+Les valeurs de \( y_{\text{pred}} \) sont toujours comprises entre **0** et **1** (grâce à **Softmax**). Quelques exemples de calculs de logarithme :
+
+- \( \log(0.9) = -0.1 \)
+- \( \log(0.1) = -2.3 \)
+- \( \log(0.0001) = -9.2 \)
+
+#### Attention !
+- \( \log(0) \) mène à une erreur (indéfini).
+- \( \log(1) = 0 \) : Cela indique qu’il n’y a **aucune erreur** lorsqu’une prédiction est parfaitement correcte.
+
+Si le gradient devient 0, cela indique que l'apprentissage ne progresse pas. Pour éviter ce problème, nous utilisons une petite valeur proche de zéro : on transforme \( y_{\text{pred}} = 0 \) en \( 1e^{-15} \) et \( y_{\text{pred}} = 1 \) en \( 1 - 1e^{-15} \).
+
+### Exemple de calcul du loss
+
+Supposons que la vérité soit \( y_{\text{true}} = [0, 1, 0] \) et la prédiction soit \( y_{\text{pred}} = [0.25, 0.5, 0.25] \). Le calcul du loss se fait comme suit :
+
+\[
+\text{loss} = [0 \times \log(0.25), 1 \times \log(0.5), 0 \times \log(0.25)]
+\]
+
+\[
+\text{loss} = [0, 1 \times \log(0.5), 0]
+\]
+
+Dans cet exemple, le gradient/loss associé est le suivant.

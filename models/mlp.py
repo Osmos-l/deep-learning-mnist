@@ -19,3 +19,19 @@ class MLP:
     def softmax(self, x):
         exp_x = np.exp(x - np.max(x, axis=1, keepdims=True))
         return exp_x / np.sum(exp_x, axis=1, keepdims=True)
+
+    def cross_entropy_loss(self, y_true, y_pred):
+        # Prevent log(0) & log(1)
+        y_pred = np.clip(y_pred, 1e-15, 1 - 1e-15)
+
+        # Calculate cross-entropy loss for each sample
+        loss = y_true * np.log(y_pred)
+
+        # Sum the loss across classes, applying negative sign
+        # to convert to positive loss
+        loss = -np.sum(loss, axis=1)
+
+        # Average the loss across all samples
+        return np.mean(loss)
+
+    
