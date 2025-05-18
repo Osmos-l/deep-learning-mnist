@@ -48,3 +48,25 @@ class MLP:
         # return a2
         # DEV
         return a1, a2
+
+    def backward(self, X, y_true, a1, a2):
+        # Nombre d'exemples
+        m = X.shape[0]
+
+        # Calcul du gradient de la sortie (softmax + cross-entropy)
+        dz2 = a2 - y_true  # (batch, output_size)
+        dw2 = np.dot(a1.T, dz2) / m
+        db2 = np.sum(dz2, axis=0, keepdims=True) / m
+
+        # Gradient pour la couche cachée
+        da1 = np.dot(dz2, self.weights_hidden_output.T)
+        dz1 = da1 * (a1 > 0)  # dérivée de ReLU
+        dw1 = np.dot(X.T, dz1) / m
+        db1 = np.sum(dz1, axis=0, keepdims=True) / m
+
+        # Mise à jour des poids et biais
+        self.weights_input_hidden   -= learning_rate * dw1
+        self.bias_hidden            -= learning_rate * db1
+
+        self.weights_hidden_output  -= learning_rate * dw2
+        self.bias_output            -= learning_rate * db2
