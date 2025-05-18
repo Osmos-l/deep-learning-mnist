@@ -2,17 +2,22 @@
 import numpy as np
 
 class MLP:
-    def __init__(self, input_size, hidden_size, output_size):
+    def __init__(self, input_size, hidden_size, output_size, learning_rate=0.01):
+        # Initialize the sizes of the layers
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.output_size = output_size
 
         # Initialize weights with small random values
-        self.weights_input_hidden = np.random.randn(input_size, hidden_size) * 0.01
-        self.weights_hidden_output = np.random.randn(hidden_size, output_size) * 0.01
+        self.weights_input_hidden = np.random.randn(input_size, hidden_size) * np.sqrt(2. / input_size)
+        self.weights_hidden_output = np.random.randn(hidden_size, output_size) * np.sqrt(2. / hidden_size)
+        
         # Initialize biases to zero
         self.bias_hidden = np.zeros((1, hidden_size))
         self.bias_output = np.zeros((1, output_size))
+
+        # Learning rate
+        self.learning_rate = learning_rate
 
     # Rectified Linear Unit (ReLU) activation function
     def relu(self, x):
@@ -65,8 +70,25 @@ class MLP:
         db1 = np.sum(dz1, axis=0, keepdims=True) / m
 
         # Mise à jour des poids et biais
-        self.weights_input_hidden   -= learning_rate * dw1
-        self.bias_hidden            -= learning_rate * db1
+        self.weights_input_hidden   -= self.learning_rate * dw1
+        self.bias_hidden            -= self.learning_rate * db1
 
-        self.weights_hidden_output  -= learning_rate * dw2
-        self.bias_output            -= learning_rate * db2
+        self.weights_hidden_output  -= self.learning_rate * dw2
+        self.bias_output            -= self.learning_rate * db2
+
+    def train(self, X, y, epochs=10):
+        for epoch in range(epochs):
+            # Mélange des données
+            indices = np.random.permutation(X.shape[0])
+            X = X[indices]
+            y = y[indices]
+
+            # Propagation avant
+            a1, a2 = self.forward(X)
+            # Calcul de la perte
+            loss = self.cross_entropy_loss(y, a2)
+            # Rétropropagation
+            self.backward(X, y, a1, a2)
+            # Affichage de la perte
+            #if (epoch + 1) % 1 == 0:
+                #print(f"\tÉpoque {epoch+1}/{epochs} - Perte : {loss:.4f}")

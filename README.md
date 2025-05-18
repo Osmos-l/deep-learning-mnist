@@ -11,6 +11,20 @@ Le MLP (Multilayer Perceptron) est constitué de trois couches principales :
 
 ![MLP](image.png)
 
+## Training results
+Le jeu d'apprentissage est constitué de **60 000** exemples et le jeu de test de **10 000** exemples.
+
+| Epochs | Durée (s) | Précision (%) |
+|--------|-----------|---------------|
+| 10     | 2.84      | 67.07         |
+| 20     | 5.46      | 79.50         |
+| 100    | 28.07     | 88.88         |
+| 200    | 54.85     | 90.58         |
+| 500    | 140.08    | 92.59         |
+| 1000   | 282.57    | 93.59         |
+| 2000   | 556.29    | 95.24         |
+| 5000   | 1389.06   | 97.05         |
+
 ## Input layer
 Elle sert à faire entrer dans le MLP chaque pixel de l'image. Dans le cas de MNIST, chaque image est composée de 28x28 pixels, soit 784 pixels au total.
 
