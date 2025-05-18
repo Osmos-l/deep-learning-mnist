@@ -6,8 +6,11 @@ class MLP:
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.output_size = output_size
+
+        # Initialize weights with small random values
         self.weights_input_hidden = np.random.randn(input_size, hidden_size) * 0.01
         self.weights_hidden_output = np.random.randn(hidden_size, output_size) * 0.01
+        # Initialize biases to zero
         self.bias_hidden = np.zeros((1, hidden_size))
         self.bias_output = np.zeros((1, output_size))
 
@@ -33,5 +36,15 @@ class MLP:
 
         # Average the loss across all samples
         return np.mean(loss)
-
     
+    def forward(self, X):
+        z1 = np.dot(X, self.weights_input_hidden) + self.bias_hidden
+        a1 = self.relu(z1)
+
+        z2 = np.dot(a1, self.weights_hidden_output) + self.bias_output
+        a2 = self.softmax(z2)
+
+        # PROD
+        # return a2
+        # DEV
+        return a1, a2
