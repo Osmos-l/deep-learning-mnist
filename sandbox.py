@@ -40,23 +40,23 @@ input_size = 28 * 28
 hidden_size = 128  # à ajuster selon vos besoins
 output_size = 10
 learning_rate = 0.1
+nb_epochs = 2000
 
-epochs_list = [10, 20, 100, 200, 500, 1000, 2000, 5000, 10000]
+# Réinitialisation du MLP à chaque test pour comparer équitablement
+mlp = MLP(input_size, hidden_size, output_size, learning_rate)
 
-for nb_epochs in epochs_list:
-    # Réinitialisation du MLP à chaque test pour comparer équitablement
-    mlp = MLP(input_size, hidden_size, output_size, learning_rate)
-    
-    print(f"\nEntrainement sur {X_full.shape[0]} exemples pendant {nb_epochs} époques.")
-    start = time.time()
-    mlp.train(X_full, y_full_oh, epochs=nb_epochs)
-    end = time.time()
+print(f"\nEntrainement sur {X_full.shape[0]} exemples pendant {nb_epochs} époques.")
+start = time.time()
+mlp.train(X_full, y_full_oh, epochs=nb_epochs)
+end = time.time()
 
-    # Prédiction sur le test set
-    _, y_pred_test = mlp.forward(X_test)
-    y_pred_labels = np.argmax(y_pred_test, axis=1)
+# Prédiction sur le test set
+_, y_pred_test = mlp.forward(X_test)
+y_pred_labels = np.argmax(y_pred_test, axis=1)
 
-    # Affichage de la précision
-    accuracy = np.mean(y_pred_labels == y_test)
-    print(f"Précision sur {X_test.shape[0]} exemples du test set après {nb_epochs} époques : {accuracy:.2%}")
-    print(f"Temps d'entraînement pour {nb_epochs} époques : {end - start:.2f} secondes")
+# Affichage de la précision
+accuracy = np.mean(y_pred_labels == y_test)
+print(f"Précision sur {X_test.shape[0]} exemples du test set après {nb_epochs} époques : {accuracy:.2%}")
+print(f"Temps d'entraînement pour {nb_epochs} époques : {end - start:.2f} secondes")
+
+mlp.save_model("model.npz")

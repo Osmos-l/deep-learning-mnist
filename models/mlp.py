@@ -78,6 +78,7 @@ class MLP:
 
     def train(self, X, y, epochs=10):
         for epoch in range(epochs):
+            print(f"Epoch {epoch+1}/{epochs}...", end='\r')
             # Mélange des données
             indices = np.random.permutation(X.shape[0])
             X = X[indices]
@@ -92,3 +93,13 @@ class MLP:
             # Affichage de la perte
             #if (epoch + 1) % 1 == 0:
                 #print(f"\tÉpoque {epoch+1}/{epochs} - Perte : {loss:.4f}")
+
+    def save_model(self, filename: str):
+        np.savez(filename,
+                input_size=self.input_size,
+                hidden_size=self.hidden_size,
+                output_size=self.output_size,
+                weights_input_hidden=self.weights_input_hidden,
+                bias_hidden=self.bias_hidden,
+                weights_hidden_output=self.weights_hidden_output,
+                bias_output=self.bias_output)
